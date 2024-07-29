@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  app:
+    image: tolgee/tolgee:${SOFTWARE_VERSION_TAG}
+    volumes:
+      - ./tolgee_data:/data/
+    ports:
+      - 172.17.0.1:45613:25432
+      - 172.17.0.1:56990:8080
+    env_file:
+      - .env
+
+  pgadmin:
+    image: elestio/pgadmin:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${ADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${ADMIN_PASSWORD}
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "172.17.0.1:11150:8080"
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
